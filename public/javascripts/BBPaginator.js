@@ -1,0 +1,1 @@
+../../../BBPaginator/src/BBPaginator.js
