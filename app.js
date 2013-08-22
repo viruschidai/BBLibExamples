@@ -49,11 +49,20 @@ app.all('/collection2/*', function(req, res, next) {
 });
 
 app.get('/collection2/', function(req, res) {
-  console.log(req.query);
   var pageSize = +req.query.pageSize,
       page = +req.query.page,
-      pageStart = page * pageSize;
-  var results = req.session.us_cities.slice(pageStart, pageStart + pageSize);
+      pageStart = page * pageSize,
+      sortDir = req.query.sortDir || 'asc',
+      sortKey = req.query.sortKey || 'Zipcode',
+      results = req.session.us_cities;
+
+  if (sortDir === 'desc') {
+    results = results.sort(function(a, b) {return a[sortKey] < b[sortKey] ? 1 : -1;});
+  } else {
+    results = results.sort(function(a, b) {return a[sortKey] > b[sortKey] ? 1 : -1;});
+  }
+
+  results = results.slice(pageStart, pageStart + pageSize);
 
 	res.json({numOfRecords: req.session.us_cities.length, page: results});
 });

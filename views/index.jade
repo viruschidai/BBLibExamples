@@ -1,6 +1,7 @@
 extends layout
 
 block css
+  link(rel='stylesheet', href='prettify/prettify.css')
   link(rel='stylesheet', href='stylesheets/BBTable.css')
   link(rel='stylesheet', href='stylesheets/BBPaginator.css')
 
@@ -8,87 +9,119 @@ block content
   div.container
     div.hero-unit
       h1 BBTable
-      p BBTable is a backbone.js powered table widget. It is simple to use and easy to extend.
+      p BBTable is a backbone.js powered table widget. It is simple to use and easy to extend. It supports both client/server side pagination, searching and sorting.
+
+      ul.inline
+        li
+          iframe(width='150', scrolling='0', height='30', frameborder='0', style='vertical-align: middle;', allowtransparency='true', src='http://ghbtns.com/github-btn.html?user=viruschidai&repo=BBTable&type=watch&count=true&size=large')
+        li
+          iframe(width='150', scrolling='0', height='30', frameborder='0', style='vertical-align: middle;', allowtransparency='true', src='http://ghbtns.com/github-btn.html?user=viruschidai&repo=BBTable&type=fork&count=true&size=large')
+        li
+          iframe(width='240', scrolling='0', height='30', frameborder='0', style='vertical-align: middle;', allowtransparency='true', src='http://ghbtns.com/github-btn.html?user=viruschidai&repo=BBTable&type=follow&count=true&size=large')
+
+
       p.pull-right
         a.btn.btn-primary(href='https://github.com/viruschidai/BBTable') Download »
       div.clearfix
 
     div.main-content
-      h2 Example 1 - BBTable with client-side pagiantion
-      div.row-fluid
-        div.span12
-          div#table-container
+      section#requirements
+        h2 Requirements
+        ul
+          li
+            a(href='http://jquery.com/') jQuery
+          li
+            a(href='http://underscore.js/') Underscore 1.4.4
+          li
+            a(href='http://backbonejs.org/') Backbonejs 0.9.10
 
-      h2 Example 2 - BBTable with server-side pagiantion
-      div.row-fluid
-        div.span12
-          div#table-container2
+
+      section#examples
+        h2 Examples
+        hr
+
+        .row-fluid
+          .span6
+            h4 Table with client side pagiantion
+            #table-container
+          .span6
+            h4 Example Code
+            pre.prettyprint.
+              var CityModel = Backbone.Model.extend({
+                idAttribute: "Zipcode"
+              });
+
+              var columns = [
+                {'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true},
+                {'key': 'County', 'label': 'County', 'sortable': true},
+                {'key': 'State', 'label': 'State', 'sortable': true},
+                {'key': 'City', 'label': 'City', 'sortable': true}
+              ];
+
+              $('#table-container').bbtable({
+                columns: columns,
+                url: '/collection/',
+                modelCls: CityModel
+              });
+
+        hr
+        .row-fluid
+          .span6
+            h4 Table with server side pagiantion
+            #table-container2
+          .span6
+            h4 Example Code
+            pre.prettyprint.
+              var CityModel = Backbone.Model.extend({
+                idAttribute: "Zipcode"
+              });
+
+              var columns = [
+                {'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true},
+                {'key': 'County', 'label': 'County', 'sortable': true},
+                {'key': 'State', 'label': 'State', 'sortable': true},
+                {'key': 'City', 'label': 'City', 'sortable': true}
+              ];
+
+              $('#table-container2').bbtable({
+                pagingMode: 'server',
+                columns: columns,
+                url: '/collection2/',
+                modelCls: CityModel
+              });
+
 block js
   script(type='text/javascript', src='javascripts/jquery.min.js')
   script(type='text/javascript', src='bootstrap/js/bootstrap.js')
   script(type='text/javascript', src='javascripts/json2.js')
   script(type='text/javascript', src='javascripts/underscore.js')
   script(type='text/javascript', src='javascripts/backbone-min.js')
-  script(type='text/javascript', src='javascripts/BBPaginator.js')
-  script(type='text/javascript', src='javascripts/BBPageable.js')
   script(type='text/javascript', src='javascripts/BBTable.js')
+  script(type='text/javascript', src='prettify/run_prettify.js')
   script(type='text/javascript')
+
     $('#table-container').addClass('backbone-table-container');
 
-    var paginationModel = new BBLib.PaginationModel({
-      pageSize: 100
-    });
     var CityModel = Backbone.Model.extend({
       idAttribute: "Zipcode"
     });
-    var ExampleCollection = BBLib.ClientSidePageable.extend({url: '/collection/', model: CityModel});
 
-    var collection = new ExampleCollection({paginationModel: paginationModel});
+    var columns = [
+      {'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true},
+      {'key': 'County', 'label': 'County', 'sortable': true},
+      {'key': 'State', 'label': 'State', 'sortable': true},
+      {'key': 'City', 'label': 'City', 'sortable': true}
+    ];
 
-    var columns = new BBLib.Columns();
-    columns.reset([
-      { 'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true, },
-      { 'key': 'County', 'label': 'County', 'sortable': true, },
-      { 'key': 'State', 'label': 'State', 'sortable': true, },
-      { 'key': 'City', 'label': 'City', 'sortable': true, },
-      { 'key': 'Longitude', 'label': 'Longitude', 'sortable': true, },
-      { 'key': 'Latitude', 'label': 'Latitude', 'sortable': true, }
-    ]);
-
-    var table = new BBLib.Table({cols: columns, model: collection});
-    $('#table-container').append(table.render().el);
-
-    var paginator = new BBLib.PaginatorView({model: paginationModel});
-
-    $('#table-container').append(paginator.render().el);
-    $('#table-container .bbtable-body').addClass('table-striped');
-    collection.fetch();
-
-
-
-    var paginationModel2 = new BBLib.PaginationModel({
-      pageSize: 10
+    $('#table-container').bbtable({
+      columns: columns,
+      url: '/collection/',
+      modelCls: CityModel
     });
 
-    var ExampleCollection2 = BBLib.ServerSidePageable.extend({url: '/collection2/', model: CityModel});
-
-    var collection2 = new ExampleCollection2({paginationModel: paginationModel2});
-
-    var columns2 = new BBLib.Columns();
-    columns2.reset([
-      { 'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true, },
-      { 'key': 'County', 'label': 'County', 'sortable': true, },
-      { 'key': 'State', 'label': 'State', 'sortable': true, },
-      { 'key': 'City', 'label': 'City', 'sortable': true, },
-      { 'key': 'Longitude', 'label': 'Longitude', 'sortable': true, },
-      { 'key': 'Latitude', 'label': 'Latitude', 'sortable': true, }
-    ]);
-
-    var table2 = new BBLib.Table({cols: columns2, model: collection2});
-    $('#table-container2').append(table2.render().el);
-
-    var paginator2 = new BBLib.PaginatorView({model: paginationModel2});
-
-    $('#table-container2').append(paginator2.render().el);
-    $('#table-container2 .bbtable-body').addClass('table-striped');
-    collection2.fetch();
+    $('#table-container2').bbtable({
+      pagingMode: 'server',
+      columns: columns,
+      url: '/collection2/',
+      modelCls: CityModel
+    });
