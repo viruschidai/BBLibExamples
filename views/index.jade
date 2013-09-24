@@ -52,16 +52,16 @@ block content
               });
 
               var columns = [
-                {'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true},
-                {'key': 'County', 'label': 'County', 'sortable': true},
-                {'key': 'State', 'label': 'State', 'sortable': true},
-                {'key': 'City', 'label': 'City', 'sortable': true}
+                {key: 'Zipcode', label: 'Zipcode', sortable: true},
+                {key: 'County', label: 'County', sortable: true},
+                {key: 'State', label: 'State', sortable: true},
+                {key: 'City', label: 'City', sortable: true}
               ];
 
               $('#table-container').bbtable({
                 columns: columns,
                 url: '/collection/',
-                modelCls: CityModel
+                modelClass: CityModel
               });
 
         hr
@@ -77,19 +77,43 @@ block content
               });
 
               var columns = [
-                {'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true},
-                {'key': 'County', 'label': 'County', 'sortable': true},
-                {'key': 'State', 'label': 'State', 'sortable': true},
-                {'key': 'City', 'label': 'City', 'sortable': true}
+                {key: 'Zipcode', label: 'Zipcode', sortable: true},
+                {key: 'County', label: 'County', sortable: true},
+                {key: 'State', label: 'State', sortable: true},
+                {key: 'City', label: 'City', sortable: true}
               ];
 
               $('#table-container2').bbtable({
                 pagingMode: 'server',
                 columns: columns,
                 url: '/collection2/',
-                modelCls: CityModel
+                modelClass: CityModel
               });
 
+        hr
+        .row-fluid
+          .span6
+            h4 Table with editable cell (dbclick to edit a cell)
+            #table-container3
+          .span6
+            h4 Example Code
+            pre.prettyprint.
+              var CityModel = Backbone.Model.extend({
+                idAttribute: "Zipcode"
+              });
+
+              var columns = [
+                {key: 'Zipcode', label: 'Zipcode', sortable: true, editable: true},
+                {key: 'County', label: 'County', sortable: true, editable: true},
+                {key: 'State', label: 'State', sortable: true, editable: true},
+                {key: 'City', label: 'City', sortable: true, editable: true}
+              ];
+
+              $('#table-container').bbtable({
+                columns: columns,
+                url: '/collection/',
+                modelClass: CityModel
+              });
 block js
   script(type='text/javascript', src='javascripts/jquery.min.js')
   script(type='text/javascript', src='bootstrap/js/bootstrap.js')
@@ -107,21 +131,34 @@ block js
     });
 
     var columns = [
-      {'key': 'Zipcode', 'label': 'Zipcode', 'sortable': true},
-      {'key': 'County', 'label': 'County', 'sortable': true},
-      {'key': 'State', 'label': 'State', 'sortable': true},
-      {'key': 'City', 'label': 'City', 'sortable': true}
+      {key: 'Zipcode', label: 'Zipcode', sortable: true},
+      {key: 'County', label: 'County', sortable: true},
+      {key: 'State', label: 'State', sortable: true},
+      {key: 'City', label: 'City', sortable: true}
     ];
 
     $('#table-container').bbtable({
       columns: columns,
       url: '/collection/',
-      modelCls: CityModel
+      modelClass: CityModel
     });
 
     $('#table-container2').bbtable({
       pagingMode: 'server',
       columns: columns,
       url: '/collection2/',
-      modelCls: CityModel
+      modelClass: CityModel
+    });
+
+    var columns = [
+      {key: 'Zipcode', label: 'Zipcode', sortable: true, editable: true},
+      {key: 'County', label: 'County', sortable: true, editable: true},
+      {key: 'State', label: 'State', sortable: true, editable: true},
+      {key: 'City', label: 'City', sortable: true, editable: true}
+    ];
+
+    $('#table-container3').bbtable({
+      columns: columns,
+      url: '/collection/',
+      modelClass: CityModel
     });
